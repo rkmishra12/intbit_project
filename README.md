@@ -43,7 +43,7 @@ STREAM_API_SECRET=your_stream_api_secret
 CLERK_PUBLISHABLE_KEY=your_clerk_publishable_key
 CLERK_SECRET_KEY=your_clerk_secret_key
 
-CLIENT_URL=http://localhost:5173
+CLIENT_URL=http://localhost:5173,https://your-frontend-domain.com
 ```
 
 Optional local code runtime prerequisites (for code execution):
@@ -56,7 +56,9 @@ Optional local code runtime prerequisites (for code execution):
 ```bash
 VITE_CLERK_PUBLISHABLE_KEY=your_clerk_publishable_key
 
-VITE_API_URL=http://localhost:3000/api
+VITE_API_URL=/api
+# Production example:
+# VITE_API_URL=https://your-backend-domain.com/api
 
 VITE_STREAM_API_KEY=your_stream_api_key
 ```

@@ -12,15 +12,23 @@ const syncUser = inngest.createFunction(
     await connectDB();
 
     const { id, email_addresses, first_name, last_name, image_url } = event.data;
+    const primaryEmail = email_addresses?.[0]?.email_address;
 
-    const newUser = {
-      clerkId: id,
-      email: email_addresses[0]?.email_address,
-      name: `${first_name || ""} ${last_name || ""}`,
-      profileImage: image_url,
-    };
+    if (!primaryEmail) {
+      throw new Error("Clerk user payload is missing a primary email address");
+    }
 
-    await User.create(newUser);
+    const fullName = `${first_name || ""} ${last_name || ""}`.trim();
+    const newUser = await User.findOneAndUpdate(
+      { clerkId: id },
+      {
+        clerkId: id,
+        email: primaryEmail,
+        name: fullName || primaryEmail.split("@")[0],
+        profileImage: image_url || "",
+      },
+      { upsert: true, new: true, setDefaultsOnInsert: true }
+    );
 
     await upsertStreamUser({
       id: newUser.clerkId.toString(),
