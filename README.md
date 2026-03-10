@@ -46,6 +46,11 @@ CLERK_SECRET_KEY=your_clerk_secret_key
 CLIENT_URL=http://localhost:5173
 ```
 
+Optional local code runtime prerequisites (for code execution):
+- Node.js (required for JavaScript)
+- Python 3 in `PATH` (required for Python)
+- JDK in `PATH` with `javac` and `java` (required for Java)
+
 ### Frontend (`/frontend`)
 
 ```bash
