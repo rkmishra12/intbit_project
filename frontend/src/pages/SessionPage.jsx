@@ -14,11 +14,13 @@ import OutputPanel from "../components/OutputPanel";
 import useStreamClient from "../hooks/useStreamClient";
 import { StreamCall, StreamVideo } from "@stream-io/video-react-sdk";
 import VideoCallUI from "../components/VideoCallUI";
+import useIsMobile from "../hooks/useIsMobile";
 
 function SessionPage() {
   const navigate = useNavigate();
   const { id } = useParams();
   const { user } = useUser();
+  const isMobile = useIsMobile();
   const [output, setOutput] = useState(null);
   const [isRunning, setIsRunning] = useState(false);
 
@@ -96,22 +98,22 @@ function SessionPage() {
   };
 
   return (
-    <div className="h-screen bg-base-100 flex flex-col">
+    <div className="h-[100dvh] bg-base-100 flex flex-col">
       <Navbar />
 
       <div className="flex-1">
-        <PanelGroup direction="horizontal">
+        <PanelGroup direction={isMobile ? "vertical" : "horizontal"}>
           {/* LEFT PANEL - CODE EDITOR & PROBLEM DETAILS */}
-          <Panel defaultSize={50} minSize={30}>
+          <Panel defaultSize={isMobile ? 55 : 50} minSize={30}>
             <PanelGroup direction="vertical">
               {/* PROBLEM DSC PANEL */}
               <Panel defaultSize={50} minSize={20}>
                 <div className="h-full overflow-y-auto bg-base-200">
                   {/* HEADER SECTION */}
-                  <div className="p-6 bg-base-100 border-b border-base-300">
-                    <div className="flex items-start justify-between mb-3">
+                  <div className="p-4 sm:p-6 bg-base-100 border-b border-base-300">
+                    <div className="flex flex-col gap-3 sm:flex-row sm:items-start sm:justify-between mb-3">
                       <div>
-                        <h1 className="text-3xl font-bold text-base-content">
+                        <h1 className="text-2xl sm:text-3xl font-bold text-base-content">
                           {session?.problem || "Loading..."}
                         </h1>
                         {problemData?.category && (
@@ -123,7 +125,7 @@ function SessionPage() {
                         </p>
                       </div>
 
-                      <div className="flex items-center gap-3">
+                      <div className="flex flex-wrap items-center gap-3">
                         <span
                           className={`badge badge-lg ${getDifficultyBadgeClass(
                             session?.difficulty
@@ -153,7 +155,7 @@ function SessionPage() {
                     </div>
                   </div>
 
-                  <div className="p-6 space-y-6">
+                  <div className="p-4 sm:p-6 space-y-6">
                     {/* problem desc */}
                     {problemData?.description && (
                       <div className="bg-base-100 rounded-xl shadow-sm p-5 border border-base-300">
@@ -186,13 +188,13 @@ function SessionPage() {
                                   <span className="text-primary font-bold min-w-[70px]">
                                     Input:
                                   </span>
-                                  <span>{example.input}</span>
+                                  <span className="break-words">{example.input}</span>
                                 </div>
                                 <div className="flex gap-2">
                                   <span className="text-secondary font-bold min-w-[70px]">
                                     Output:
                                   </span>
-                                  <span>{example.output}</span>
+                                  <span className="break-words">{example.output}</span>
                                 </div>
                                 {example.explanation && (
                                   <div className="pt-2 border-t border-base-300 mt-2">
@@ -252,10 +254,16 @@ function SessionPage() {
             </PanelGroup>
           </Panel>
 
-          <PanelResizeHandle className="w-2 bg-base-300 hover:bg-primary transition-colors cursor-col-resize" />
+          <PanelResizeHandle
+            className={
+              isMobile
+                ? "h-2 bg-base-300 hover:bg-primary transition-colors cursor-row-resize"
+                : "w-2 bg-base-300 hover:bg-primary transition-colors cursor-col-resize"
+            }
+          />
 
           {/* RIGHT PANEL - VIDEO CALLS & CHAT */}
-          <Panel defaultSize={50} minSize={30}>
+          <Panel defaultSize={isMobile ? 45 : 50} minSize={30}>
             <div className="h-full bg-base-200 p-4 overflow-auto">
               {isInitializingCall ? (
                 <div className="h-full flex items-center justify-center">

@@ -8,6 +8,7 @@ import ProblemDescription from "../components/ProblemDescription";
 import OutputPanel from "../components/OutputPanel";
 import CodeEditorPanel from "../components/CodeEditorPanel";
 import { executeCode } from "../lib/codeExecution";
+import useIsMobile from "../hooks/useIsMobile";
 
 import toast from "react-hot-toast";
 import confetti from "canvas-confetti";
@@ -21,6 +22,7 @@ function ProblemPage() {
   const [code, setCode] = useState(PROBLEMS[currentProblemId].starterCode.javascript);
   const [output, setOutput] = useState(null);
   const [isRunning, setIsRunning] = useState(false);
+  const isMobile = useIsMobile();
 
   const currentProblem = PROBLEMS[currentProblemId];
 
@@ -107,13 +109,13 @@ function ProblemPage() {
   };
 
   return (
-    <div className="h-screen bg-base-100 flex flex-col">
+    <div className="h-[100dvh] bg-base-100 flex flex-col">
       <Navbar />
 
       <div className="flex-1">
-        <PanelGroup direction="horizontal">
+        <PanelGroup direction={isMobile ? "vertical" : "horizontal"}>
           {/* left panel- problem desc */}
-          <Panel defaultSize={40} minSize={30}>
+          <Panel defaultSize={isMobile ? 50 : 40} minSize={30}>
             <ProblemDescription
               problem={currentProblem}
               currentProblemId={currentProblemId}
@@ -122,10 +124,16 @@ function ProblemPage() {
             />
           </Panel>
 
-          <PanelResizeHandle className="w-2 bg-base-300 hover:bg-primary transition-colors cursor-col-resize" />
+          <PanelResizeHandle
+            className={
+              isMobile
+                ? "h-2 bg-base-300 hover:bg-primary transition-colors cursor-row-resize"
+                : "w-2 bg-base-300 hover:bg-primary transition-colors cursor-col-resize"
+            }
+          />
 
           {/* right panel- code editor & output */}
-          <Panel defaultSize={60} minSize={30}>
+          <Panel defaultSize={isMobile ? 50 : 60} minSize={30}>
             <PanelGroup direction="vertical">
               {/* Top panel - Code editor */}
               <Panel defaultSize={70} minSize={30}>

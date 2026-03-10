@@ -3,9 +3,9 @@ function ProblemDescription({ problem, currentProblemId, onProblemChange, allPro
   return (
     <div className="h-full overflow-y-auto bg-base-200">
       {/* HEADER SECTION */}
-      <div className="p-6 bg-base-100 border-b border-base-300">
-        <div className="flex items-start justify-between mb-3">
-          <h1 className="text-3xl font-bold text-base-content">{problem.title}</h1>
+      <div className="p-4 sm:p-6 bg-base-100 border-b border-base-300">
+        <div className="flex flex-col gap-2 sm:flex-row sm:items-start sm:justify-between mb-3">
+          <h1 className="text-2xl sm:text-3xl font-bold text-base-content">{problem.title}</h1>
           <span className={`badge ${getDifficultyBadgeClass(problem.difficulty)}`}>
             {problem.difficulty}
           </span>
@@ -28,7 +28,7 @@ function ProblemDescription({ problem, currentProblemId, onProblemChange, allPro
         </div>
       </div>
 
-      <div className="p-6 space-y-6">
+      <div className="p-4 sm:p-6 space-y-6">
         {/* PROBLEM DESC */}
         <div className="bg-base-100 rounded-xl shadow-sm p-5 border border-base-300">
           <h2 className="text-xl font-bold text-base-content">Description</h2>
@@ -56,11 +56,11 @@ function ProblemDescription({ problem, currentProblemId, onProblemChange, allPro
                 <div className="bg-base-200 rounded-lg p-4 font-mono text-sm space-y-1.5">
                   <div className="flex gap-2">
                     <span className="text-primary font-bold min-w-[70px]">Input:</span>
-                    <span>{example.input}</span>
+                    <span className="break-words">{example.input}</span>
                   </div>
                   <div className="flex gap-2">
                     <span className="text-secondary font-bold min-w-[70px]">Output:</span>
-                    <span>{example.output}</span>
+                    <span className="break-words">{example.output}</span>
                   </div>
                   {example.explanation && (
                     <div className="pt-2 border-t border-base-300 mt-2">
